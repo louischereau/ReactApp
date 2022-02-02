@@ -58,7 +58,7 @@ const MintButton = () => {
     const getCandyMachineId = (): anchor.web3.PublicKey | undefined => {
       try {
         const candyMachineId = new anchor.web3.PublicKey(
-          "3eCJxvtTAokyRuawZdvpfADEKr96D4dv8DDdXFZF7xgJ"
+          "Ax9fYaiAjVFm7Xk2H9q5M9jqJ4XpKYxr3qaHN6URTwLa"
         ); 
         return candyMachineId; // returns the candyMachineID
       } catch (e) {
