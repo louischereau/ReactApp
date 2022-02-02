@@ -1,26 +1,28 @@
 {
   "../node_modules/@solana/wallet-adapter-blocto/lib/esm/adapter.mjs -> @blocto/sdk": {
-    "id": "../node_modules/@solana/wallet-adapter-blocto/lib/esm/adapter.mjs -> @blocto/sdk",
+    "id": 2746,
     "files": [
-      "static/chunks/node_modules_blocto_sdk_dist_blocto-sdk_umd_js.js"
+      "static/chunks/06f47d9b.03d939f235694de5.js"
     ]
   },
   "../node_modules/@solana/wallet-adapter-ledger/lib/esm/adapter.mjs -> @ledgerhq/hw-transport-webhid": {
-    "id": "../node_modules/@solana/wallet-adapter-ledger/lib/esm/adapter.mjs -> @ledgerhq/hw-transport-webhid",
+    "id": 4210,
     "files": [
-      "static/chunks/node_modules_ledgerhq_hw-transport-webhid_lib-es_TransportWebHID_js.js"
+      "static/chunks/210.928e992faefdadff.js"
     ]
   },
   "../node_modules/@solana/wallet-adapter-sollet/lib/esm/base.mjs -> @project-serum/sol-wallet-adapter": {
-    "id": "../node_modules/@solana/wallet-adapter-sollet/lib/esm/base.mjs -> @project-serum/sol-wallet-adapter",
+    "id": 6770,
     "files": [
-      "static/chunks/node_modules_project-serum_sol-wallet-adapter_dist_esm_index_js.js"
+      "static/chunks/770.fea494f319150362.js"
     ]
   },
   "../node_modules/@solana/wallet-adapter-torus/lib/esm/adapter.mjs -> @toruslabs/solana-embed": {
-    "id": "../node_modules/@solana/wallet-adapter-torus/lib/esm/adapter.mjs -> @toruslabs/solana-embed",
+    "id": 5193,
     "files": [
-      "static/chunks/node_modules_toruslabs_solana-embed_dist_torus_esm_js.js"
+      "static/chunks/29107295.a2d0c8e72019a3ed.js",
+      "static/chunks/193.3ba514654b98a4b0.js",
+      "static/chunks/507.734096b2c261caf9.js"
     ]
   }
 }

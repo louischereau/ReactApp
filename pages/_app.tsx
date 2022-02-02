@@ -17,6 +17,7 @@ import {
 import { AppProps } from 'next/app';
 import Home from '../components/Mint';
 import Unity, { UnityContext } from "react-unity-webgl";
+
 import Mint from '../components/Mint';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -27,14 +28,7 @@ require('../styles/globals.css');
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
 
-    const unityContext = new UnityContext({
-      loaderUrl: "./unity_build/dummy.loader.js",
-      dataUrl: "./unity_build/dummy.data",
-      frameworkUrl: "./unity_build/dummy.framework.js",
-      codeUrl: "./untiy_build/dummy.wasm",
-    });
   
-    unityContext.on("Mint", async () => {Mint()});
   
 
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
@@ -67,7 +61,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
               <WalletModalProvider>
                   <Component {...pageProps} />
                   <Home/>
-                  <Unity unityContext={unityContext}/>
+                  <div>
+
+                  </div>
               </WalletModalProvider>
           </WalletProvider>
       </ConnectionProvider>
