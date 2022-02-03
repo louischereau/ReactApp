@@ -18,7 +18,7 @@ import { Button } from '@mui/material';
 
 
 
-const MintButton = () => {
+export const MintFunction = () => {
     // call to useWallet function to get the info about connected wallet, like the public key
     const wallet = useWallet(); 
 
@@ -58,7 +58,7 @@ const MintButton = () => {
     const getCandyMachineId = (): anchor.web3.PublicKey | undefined => {
       try {
         const candyMachineId = new anchor.web3.PublicKey(
-          "Ax9fYaiAjVFm7Xk2H9q5M9jqJ4XpKYxr3qaHN6URTwLa"
+          "8aYkMCQRGWdHos3SiDBN5KX8pWZU5uUqVjdVZ4GxvFkY"
         ); 
         return candyMachineId; // returns the candyMachineID
       } catch (e) {
@@ -92,13 +92,7 @@ const MintButton = () => {
   }
   // here the minting function defined above is called
   //Minting()
-  
-  return(
-    <Button 
-      onClick={async() => {await Mint()}}>
-      Mint
-      </Button>
-    )
+  Mint()
+  return;
    
 } 
-export default MintButton

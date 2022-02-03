@@ -15,10 +15,10 @@ import {
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { AppProps } from 'next/app';
-import Home from '../components/Mint';
+
 import Unity, { UnityContext } from "react-unity-webgl";
 
-import Mint from '../components/Mint';
+
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 require('../styles/globals.css');
@@ -60,7 +60,6 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           <WalletProvider wallets={wallets} autoConnect>
               <WalletModalProvider>
                   <Component {...pageProps} />
-                  <Home/>
                   <div>
 
                   </div>
