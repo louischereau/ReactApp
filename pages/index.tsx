@@ -128,6 +128,9 @@ function timeout(delay: number) {
     <Head>
       <title>NFT Games</title>
     </Head>
+    <h1>
+  
+    </h1>
      <main className={styles.main}>  
        <div className={styles.walletButtons}>    
          <WalletMultiButton />

@@ -1,5 +1,5 @@
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
   ConnectionProvider,
@@ -15,8 +15,10 @@ import {
   TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { AppProps } from 'next/app';
+import * as anchor from '@project-serum/anchor'
 
 import Unity, { UnityContext } from "react-unity-webgl";
+import Home from '.';
 
 
 
@@ -28,6 +30,20 @@ require('../styles/globals.css');
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
 
+     /* 
+    //function declaration -> the setCandyMachine function determines the candyMachine variable
+    const [candyMachine, setCandyMachine] = useState<CandyMachineAccount>();
+     
+    // takes the wallet variable initialised above and creates an anchorWallet i.e. a Wallet usable by Anchor client
+    
+    // set the host to Devnet
+    const rpcHost = 'https://api.devnet.solana.com'
+     
+    // establish a new connection to the solana devnet
+     const connection = new anchor.web3.Connection(rpcHost
+      ? rpcHost
+      : anchor.web3.clusterApiUrl('devnet')); 
+*/
   
   
 
@@ -61,7 +77,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
               <WalletModalProvider>
                   <Component {...pageProps} />
                   <div>
-
+    
                   </div>
               </WalletModalProvider>
           </WalletProvider>
