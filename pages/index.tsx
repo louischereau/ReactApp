@@ -24,6 +24,8 @@ const Home: NextPage = () => {
   // call to useWallet function to get the info about connected wallet, like the public key
   const wallet = useWallet(); 
   
+  
+
   const anchorWallet = useMemo(() => {
     if (
       !wallet ||
@@ -111,12 +113,27 @@ const Home: NextPage = () => {
     });
   })
 */
+var message = "No wallet connected"
+/*if(wallet.publicKey != null){
+  console.log("str updated")
+  message = wallet.publicKey.toBase58()
+  console.log(message)
+}*/
+
+const sendConfirmation = (data: string) => {
+  console.log("function called")
+  console.log("message is:", data)
+  unityContext.send("datareadcontroller", "GetNFTData", data);
+ 
+}
 
 function timeout(delay: number) {
   return new Promise( res => setTimeout(res, delay) );
 }
   unityContext.on("Mint", async () => {
-    await Mint()});
+    const result = await Mint()
+    
+  });
   
   function handleOnClickFullscreen() {
     unityContext.setFullscreen(true);
@@ -124,22 +141,26 @@ function timeout(delay: number) {
 
 
   return (
-    <div className={styles.title}>
-    <Head>
-      <title>NFT Games</title>
-    </Head>
-    <h1>
-  
-    </h1>
+    <div>
+      <Head>
+        <title>NFT Games</title>
+      </Head>
+      <h1 className={styles.title}>NFT Games</h1>
+      
      <main className={styles.main}>  
-       <div className={styles.walletButtons}>    
+        <div>
+        
+        </div>
+       <div className={styles.walletButtons}>  
+       <Button onClick={() => sendConfirmation(message)}> send message </Button>
          <WalletMultiButton />
          <WalletDisconnectButton />
        </div>
+  
        <Unity
           unityContext={unityContext}
           style={{
-            height: "100%",
+            height: "10%",
             width: 950,
             border: "2px solid black",
             background: "grey",
