@@ -124,6 +124,17 @@ export async function sendTransactionsWithManualRetry(
 
   return ids;
 }
+var aKey = [70,151,56,185,57,176,79,48,100,74,93,122,110,238,141,118,0,33,191,165,106,20,219,92,138,141,71,73,239,197,36,196,190,68,211,149,137,250,17,133,140,251,156,64,65,235,78,57,75,152,220,196,241,39,102,87,193,146,12,19,197,8,218,103]
+// MARKUS:
+/*
+function readKeyfile(keypairfile: any) {
+  let kf = aKey
+  let parsed = JSON.parse(kf.toString()) // [1,1,2,2,3,4]
+  kf = new Uint8Array(parsed)
+  const keypair = Keypair.fromSecretKey(kf)
+  return keypair
+}*/
+
 
 export const sendTransactions = async (
   connection: Connection,
