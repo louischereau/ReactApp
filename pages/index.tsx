@@ -3,7 +3,7 @@ import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapte
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-
+/*import styled from 'styled-components';*/
 import Unity, { UnityContext } from "react-unity-webgl";
 
 import { useMemo, useState } from 'react';
@@ -17,14 +17,33 @@ import {
     mintOneToken,
   } from '../components/candy-machine';
 import { Button } from '@mui/material';
+import Message from '../components/Message';
+import {MessageProp} from '../components/Message';
+import {getParsedNftAccountsByOwner} from "@nfteyez/sol-rayz"
+import { height } from '@mui/system';
+
+
+var unityContext = new UnityContext({
+  loaderUrl: "unitybuild/AnotherTestApp.loader.js",
+  dataUrl: "unitybuild/AnotherTestApp.data",
+  frameworkUrl: "unitybuild/AnotherTestApp.framework.js",
+  codeUrl: "unitybuild/AnotherTestApp.wasm",
+  });
+
+   // set the host to Devnet
+   const rpcHost = 'https://api.devnet.solana.com'
+     
+   // establish a new connection to the solana devnet
+    const connection = new anchor.web3.Connection(rpcHost
+     ? rpcHost
+     : anchor.web3.clusterApiUrl('devnet')); 
+
 
 /* This function returns the layout of the hompage, including two buttons to connect and disconnect the wallet*/
 const Home: NextPage = () => {   
   
   // call to useWallet function to get the info about connected wallet, like the public key
   const wallet = useWallet(); 
-  
-  
 
   const anchorWallet = useMemo(() => {
     if (
@@ -49,22 +68,14 @@ const Home: NextPage = () => {
      
     // takes the wallet variable initialised above and creates an anchorWallet i.e. a Wallet usable by Anchor client
     
-    // set the host to Devnet
-    const rpcHost = 'https://api.devnet.solana.com'
-     
-    // establish a new connection to the solana devnet
-     const connection = new anchor.web3.Connection(rpcHost
-      ? rpcHost
-      : anchor.web3.clusterApiUrl('devnet')); 
+   
 
-  const Mint = async() => {
-     
-     
+  const Mint = async() => { 
     // turnes the public key string below into a public key object (required for the next functions)
     const getCandyMachineId = (): anchor.web3.PublicKey | undefined => {
       try {
         const candyMachineId = new anchor.web3.PublicKey(
-          "8aYkMCQRGWdHos3SiDBN5KX8pWZU5uUqVjdVZ4GxvFkY"
+          "H6JikzHLKqVjafkE6vUaSjmXL3J4ZyhZoxJQ1h3oxXCD"
         ); 
         return candyMachineId; // returns the candyMachineID
       } catch (e) {
@@ -93,72 +104,112 @@ const Home: NextPage = () => {
     if (wallet.connected && candyMachine?.program && wallet.publicKey){
           await mintOneToken(candyMachine, wallet.publicKey)
           console.log("minted")
+          send("minted Spaceman")
         }
   
   }
-  // here the minting function defined above is called
-  //Minting()
-  
-  
-  const unityContext = new UnityContext({
-    loaderUrl: "unitybuild/AnotherTestApp.loader.js",
-    dataUrl: "unitybuild/AnotherTestApp.data",
-    frameworkUrl: "unitybuild/AnotherTestApp.framework.js",
-    codeUrl: "unitybuild/AnotherTestApp.wasm",
-  });
+  var reload = 0;
+  const [image, setImage] = useState()
+  useEffect(() =>{
+    const data = async() => { 
+      const nft_data = await getParsedNftAccountsByOwner({
+        publicAddress: wallet.publicKey, 
+        connection: connection,
+     });
+      async function getImage() {
+        try {
+         let response = await fetch(nft_data[1].data.uri);
+         let responseJson = await response.json();
+         return responseJson.image;
+        } catch(error) {
+         console.error(error);
+        }
+      }
+      setImage(await getImage()) // sets image URI to image, to be displayed on website
+      send(nft_data[1].data.name.toString()) // Sends NFT name to unity
+      return nft_data;
+    }
+    if(wallet.connected)
+      data()
+  },[wallet, reload])
+
+
+  // Creating the Unity Context Instance
+  // https://github.com/jeffreylanters/react-unity-webgl/discussions/242
+  /*const [unityContext, setUnity] = useState<UnityContext>()
+  useEffect(() => {
+    var new_untiy_context = new UnityContext({
+      loaderUrl: "unitybuild/AnotherTestApp.loader.js",
+      dataUrl: "unitybuild/AnotherTestApp.data",
+      frameworkUrl: "unitybuild/AnotherTestApp.framework.js",
+      codeUrl: "unitybuild/AnotherTestApp.wasm",
+      });
+    setUnity(new_untiy_context);
+  },[]);
+  */
 /*
-  useEffect(function(){
-    unityContext.on("Mint", function(){
-      console.log("Test")
-    });
-  })
-*/
-var message = "No wallet connected"
-/*if(wallet.publicKey != null){
-  console.log("str updated")
-  message = wallet.publicKey.toBase58()
-  console.log(message)
-}*/
+  const getBalance = async() => {
+    if(wallet.publicKey){
+      const candy = new anchor.web3.PublicKey(
+        "8aYkMCQRGWdHos3SiDBN5KX8pWZU5uUqVjdVZ4GxvFkY"
+      var balance = await connection.getTokenAccountsByOwner(wallet.publicKey, Mint: candy)
+      send(balance.value.amount.toString())
+    }
+  }*/
 
-const sendConfirmation = (data: string) => {
-  console.log("function called")
-  console.log("message is:", data)
-  unityContext.send("datareadcontroller", "GetNFTData", data);
- 
-}
-
-function timeout(delay: number) {
-  return new Promise( res => setTimeout(res, delay) );
-}
-  unityContext.on("Mint", async () => {
-    const result = await Mint()
-    
-  });
   
+  // Full screen handler
   function handleOnClickFullscreen() {
-    unityContext.setFullscreen(true);
+    if(unityContext)
+      unityContext.setFullscreen(true);
   }
 
+  var msg = "no wallet detected";
+  if (wallet.connected && wallet.publicKey != null){
+    msg = wallet.publicKey?.toBase58()
+  }
 
+  //send message
+  function send(message: string | boolean ){
+    console.log("function called")
+    console.log("message is:", message)
+    message = "Message is: " + message;
+    unityContext!.send("datareadcontroller", "GetNFTData", message)
+}
+
+  // Event Listener for Mint Event
+  if(unityContext){
+    unityContext.on("Mint", async () => {
+      const result = await Mint()
+      reload+=1;
+      send("just minted")
+    });
+  }
+ 
   return (
     <div>
       <Head>
         <title>NFT Games</title>
       </Head>
-      <h1 className={styles.title}>NFT Games</h1>
-      
+            <h1 className={styles.title}>NFT Games</h1> 
      <main className={styles.main}>  
         <div>
-        
+        <img 
+      src={image}
+      style={{height: "10%",
+      width: 200}}/>
+
         </div>
        <div className={styles.walletButtons}>  
-       <Button onClick={() => sendConfirmation(message)}> send message </Button>
          <WalletMultiButton />
          <WalletDisconnectButton />
+         <button onClick={() => {send(msg)}}> send msg</button>
+         <button onClick={handleOnClickFullscreen}> fullscreen </button>
+
        </div>
-  
+       
        <Unity
-          unityContext={unityContext}
+          unityContext={unityContext!}
           style={{
             height: "10%",
             width: 950,
@@ -169,26 +220,6 @@ function timeout(delay: number) {
  </div>
   );
 
-
 };
 
 export default Home;
-
-/*
- <div className={styles.title}>
-           <Head>
-             <title>NFT Games</title>
-           </Head>
-            <main className={styles.main}>  
-              <div className={styles.walletButtons}>    
-                <WalletMultiButton />
-                <WalletDisconnectButton />
-              </div>
-              <div className={styles.buttons}>
-                <MintButton/>
-              </div>
-       </main>
-        </div>
-
-
-*/
