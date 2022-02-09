@@ -108,14 +108,25 @@ const Home: NextPage = () => {
         }
   
   }
+
+  /*
+  let nftArray: { id: number, name: string }[] = []
+  nftArray[0] = { "id": 0, "name": "Available" };
+  nftArray.push({ "id": 0, "name": "Available" })
+  console.log(nftArray[0].id)
+  */
+
   var reload = 0;
   const [image, setImage] = useState()
+  const [name, setName] = useState<String>()
   useEffect(() =>{
     const data = async() => { 
       const nft_data = await getParsedNftAccountsByOwner({
         publicAddress: wallet.publicKey, 
         connection: connection,
      });
+      setName(nft_data[0].data.name);
+      console.log(nft_data[1].data.uri)
       async function getImage() {
         try {
          let response = await fetch(nft_data[1].data.uri);
@@ -133,6 +144,7 @@ const Home: NextPage = () => {
       data()
   },[wallet, reload])
 
+  
 
   // Creating the Unity Context Instance
   // https://github.com/jeffreylanters/react-unity-webgl/discussions/242
@@ -156,7 +168,7 @@ const Home: NextPage = () => {
       send(balance.value.amount.toString())
     }
   }*/
-
+  console.log("name: ", name)
   
   // Full screen handler
   function handleOnClickFullscreen() {
@@ -171,6 +183,8 @@ const Home: NextPage = () => {
 
   //send message
   function send(message: string | boolean ){
+    console.log("test")
+    
     console.log("function called")
     console.log("message is:", message)
     message = "Message is: " + message;
@@ -194,6 +208,9 @@ const Home: NextPage = () => {
             <h1 className={styles.title}>NFT Games</h1> 
      <main className={styles.main}>  
         <div>
+          <div>
+            {name}
+          </div>
         <img 
       src={image}
       style={{height: "10%",
