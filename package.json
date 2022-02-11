@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "GENERATE_SOURCEMAP=false react-scripts next build --prod",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
